@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""variable definitions"""
+
 
 a: int = 1
 pi: float = 3.14
