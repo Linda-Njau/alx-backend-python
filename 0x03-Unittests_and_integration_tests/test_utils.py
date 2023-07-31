@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """test file for utilis"""
 import unittest
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 from parameterized import parameterized
 from unittest.mock import patch, Mock
 
@@ -41,3 +41,27 @@ class TestGetJson(unittest.TestCase):
             real_response = get_json(test_url)
             self.assertEqual(real_response, test_payload)
             mock_response.json.assert_called_once()
+
+
+class TestMemoize(unittest.TestCase):
+    """Test Memoize decorator"""
+
+    def test_memoize(self):
+        """tests if Memoize is called once"""
+        class TestClass:
+            """Test class for Memoize"""
+
+            def a_method(self):
+                """Test method"""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """decorated Test method"""
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method', return_value=42) as mock_obj:
+            obj = TestClass()
+            obj.a_property
+            obj.a_property
+            mock_obj.assert_called_once()
